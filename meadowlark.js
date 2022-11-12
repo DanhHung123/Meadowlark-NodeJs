@@ -1,5 +1,5 @@
-import express from 'express';
-import { engine } from 'express-handlebars';
+const express = require('express');
+const { engine } = require('express-handlebars');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -14,14 +14,25 @@ const fortunes = [
    ]
 
 // config Handlebars view engine
-app.engine('handlebars', engine());
+app.engine('handlebars', engine({
+    defaultLayout: 'main',
+    helpers: {
+        section: function(name, options) {
+            if(!this._sections) 
+                this._sections = {}
+                
+            this._sections[name] = options.fn(this)
+
+            return null
+        },
+    },
+}) );
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 
 app.get('/', (req,res) => {
     res.render('home');
-
 })
 app.get('/about',(req,res) => {
     res.render('about');
@@ -29,23 +40,6 @@ app.get('/about',(req,res) => {
     res.render('about', { fortune: randomFortune });
 })
 
-
-// custom 404 page
-app.use(function(req, res) {
-    res.status(404);
-    res.render('404');
-
-})
-
-// custom 500 page
-app.use(function(err,req, res, next) {
-    console.log(err.message);
-    res.status(500);
-    res.render('500');
-
-})
-
 app.listen(port, () => {
-    console.log(`Express started on http://localhost:${port}; ` +
-    `press Ctrl-C to terminate.`);
+    console.log(`Express started on http://localhost:${port}` + ` --> press Ctrl-C to terminate.`);
 })
