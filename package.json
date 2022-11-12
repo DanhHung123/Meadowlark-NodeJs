@@ -4,6 +4,7 @@
   "description": "",
   "main": "meadowlark.js",
   "scripts": {
+    "start": "nodemon meadowlark.js",
     "test": "jest --watch"
   },
   "author": "",
@@ -11,7 +12,9 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
-    "handlebars": "^4.7.7"
+    "handlebars": "^4.7.7",
+    "multiparty": "^4.2.3",
+    "nodemon": "^2.0.20"
   },
   "devDependencies": {
     "eslint": "^8.27.0",
